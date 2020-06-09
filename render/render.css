@@ -1,0 +1,318 @@
+@charset 'utf-8';
+@import '/common/sse.css';
+
+services, fields, operations, folders {
+  display: block;
+  overflow: hidden;
+}
+
+service,
+field,
+prop,
+operation {
+  vertical-align: top;
+}
+
+prop {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+}
+
+prop > header {
+  background: #eeeeee;
+  color: #333333;
+}
+
+grants {
+  float: right;
+}
+
+grant {
+  font-size: small;
+  margin-left: 10px;
+  padding: 0 5px;
+}
+
+grant permission {
+  font-family: Consolas, monospace;
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+  background-color: #ffffff;
+  padding: 0 3px;
+}
+
+grant to {
+  padding: 0 5px 0 0;
+}
+
+grant read,
+grant write,
+grant execute {
+  display: inline-block;
+  letter-spacing: 2px;
+}
+
+grant .true {
+  font-weight: bold;
+}
+
+service {
+  display: inline-block;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #996192;
+  border-radius: 3px;
+}
+
+service > header {
+  background: #996192;
+  color: white;
+}
+
+field {
+  display: inline-block;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+field:not([type]) {
+  border: 1px solid #13ce66;
+}
+
+field:not([type]) > header {
+  background: #E8FAF0;
+  color: #13ce66;
+}
+
+field[type="binary"],
+field[type="boolean"],
+field[type="float"],
+field[type="integer"],
+field[type="json"],
+field[type="utf8"] {
+  border-color: #EDAB40;
+}
+
+field[type="binary"]  > header,
+field[type="boolean"] > header,
+field[type="float"]   > header,
+field[type="integer"] > header,
+field[type="json"]    > header,
+field[type="utf8"]    > header {
+  background: #FEF8EA;
+  color: #EDAB40;
+}
+
+field[type="string"],
+field[type="term"] {
+  border-color: #E9F6FF;
+}
+
+field[type="string"]  > header,
+field[type="term"]    > header {
+  background: #E9F6FF;
+  color: #20a0ff;
+}
+
+folder, mix {
+  display: block;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+source > folder > header {
+  background: #ebebeb;
+}
+
+folder  > header,
+mix     > header {
+  font-size: medium;
+  background: #fbfbfb;
+  color: #647276;
+  border-bottom: 1px solid #eee;
+}
+
+mix > header {
+  background: #e8f0ff;
+}
+
+pre {
+  margin: 0;
+  font-size: medium;
+  text-align: left;
+  color: #666666;
+  overflow: hidden;
+  border: 1px dotted transparent;
+  border-radius: 3px;
+}
+
+pre:hover {
+  border-color: #888;
+}
+
+.icon {
+  font-size: x-small;
+}
+
+header > span.icon::after {
+  content: " ";
+}
+
+header > span.name {
+  cursor: pointer;
+}
+
+header > .href {
+  color: inherit;
+  font-size: small;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+header > a.href {
+  border: 2px solid #eeeeee;
+  border-radius: 3px;
+  padding: 1px 5px;
+  background-color: #fafafa;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.closed > header > .icon.open-close::before {
+  content: "▶︎";
+}
+
+.opened > header > .icon.open-close::before {
+  content: "▼";
+}
+
+.listen > header > .name {
+  text-decoration: underline;
+}
+
+table {
+  font-size: small;
+  line-height: 110%;
+}
+
+table.operation {
+  padding: 2px;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+  border-spacing: 1px;
+}
+
+table.operation.highlight {
+  border-color: #ccc;
+  background-color: #f4f4f4;
+}
+
+tr.notify > .set {
+  color: white;
+  background: #4ac8a7;
+}
+
+tr.solicit > .set {
+  color: white;
+  background: #4AC8A7;
+}
+
+tr.response > .set {
+  color: white;
+  background: #EDAB40;
+}
+
+tr.request > .set {
+  color: white;
+  background: #48BCDC;
+}
+
+tr.reply > .set {
+  color: white;
+  background: #48BCDC;
+}
+
+tr.consume > .set {
+  color: white;
+  background: #EDAB40;
+}
+
+tr.notify   > .fields span.icon::before,
+tr.solicit  > .fields span.icon::before,
+tr.reply    > .fields span.icon::before,
+tr.request  > .fields span.icon::before,
+tr.consume  > .fields span.icon::before,
+tr.response > .fields span.icon::before {
+  font-size: medium;
+  content: "➞";
+  color: #647276;
+}
+
+tr.request  > .fields span.icon,
+tr.consume  > .fields span.icon,
+tr.response > .fields span.icon {
+  display: inline-block;
+  transform: rotate(180deg);
+  vertical-align: top;
+}
+
+td.fields {
+  text-align: left;
+}
+
+td.fields .label {
+  margin-left: 3px;
+  color: #647276;
+}
+
+tr.notify   td:first-child,
+tr.solicit  td:first-child,
+tr.request  td:first-child,
+tr.consume  td:first-child {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+tr.notify               td:first-child,
+tr.response:last-child  td:first-child,
+tr.reply:last-child     td:first-child,
+tr.consume:only-child   td:first-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+td.set {
+  min-width: 6em;
+}
+
+td.fields {
+  font-size: small;
+}
+
+td.fields .field.highlight .label {
+  background: #888;
+  color: white;
+  border-radius: 2px;
+}
+
+table.attributes {
+  color: #555;
+  text-align: left;
+}
+
+.attr-name {
+  font-weight: bold;
+}

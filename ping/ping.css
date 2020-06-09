@@ -1,0 +1,56 @@
+@charset 'UTF-8';
+@import "/common/sse.css";
+
+ping {
+  display: block;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+pod input {
+  width: 20em;
+}
+
+ping  > header {
+  font-size: medium;
+  background: #fbfbfb;
+  color: #647276;
+  border-bottom: 1px solid #eee;
+}
+
+header input {
+  font-size: inherit;
+  border: none;
+  background: inherit;
+}
+
+pong {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 1em 0.5em;
+}
+
+pong attr {
+  display: table-row;
+}
+
+pong key,
+pong value {
+  display: table-cell;
+  text-align: left;
+}
+
+pong value {
+  font-weight: bold;
+}
+
+menu a {
+  display: none;
+}
+
+.pong menu a {
+  display: inline-block;
+}
+

@@ -1,0 +1,166 @@
+@charset 'utf-8';
+@import '/common/sse.css';
+
+add-listener,
+control-all {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+}
+
+add-listener > header,
+control-all > header {
+  background: #eeeeee;
+  color: #333333;
+}
+
+add-listener input,
+control-all input {
+  margin: 5 5 5 0;
+  border: none;
+}
+
+listeners {
+  display: block;
+}
+
+listener {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+}
+
+listener > header {
+  background: #7096bb;
+  color: white;
+  min-width: 15em;
+}
+
+listener.disconnected > header {
+  background: #a0a7b7;
+}
+
+error {
+  color: red;
+}
+
+struct {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  margin: 3px;
+}
+
+@keyframes flash {
+  from { background:  #eee;} to { background: #7096bb; }
+}
+
+struct > header {
+  animation: flash 0.75s ease-in 0s 2 alternate;
+  background: #eee;
+  color: #333333;
+}
+
+struct td {
+  white-space: pre;
+}
+
+stats {
+  display: block;
+  text-align: center;
+  width: 100%;
+  color: #666;
+}
+
+stats > * {
+  margin: 0 0.5em 0 0.5em;
+  display: inline-block;
+}
+
+trip::before {
+  content: "Trip ";
+}
+
+odo::before {
+  content: " Odo ";
+}
+
+pre {
+  margin: 0;
+  font-size: medium;
+  text-align: left;
+  color: #666666;
+  overflow: hidden;
+  border: 1px dotted transparent;
+  border-radius: 3px;
+}
+
+pre:hover {
+  border-color: #888;
+}
+
+.closed content {
+  display: none;
+}
+
+.icon {
+  font-size: small;
+}
+
+.icon.right {
+  margin-left: 10px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.icon.open-close {
+  font-size: xx-small;
+}
+
+.closed > header > .icon.open-close::before {
+  content: "▶︎";
+}
+
+.opened > header > .icon.open-close::before {
+  content: "▼";
+}
+
+header > span {
+  line-height: 18px;
+}
+
+.icon.right {
+  float: right;
+}
+
+.icon.clear::before {
+  content: "C";
+}
+
+.icon.close::before {
+  content: "X";
+}
+
+.icon.pause::before {
+  content: "S";
+}
+
+listener.disconnected .icon.pause::before {
+  content: "G";
+}
+
+table {
+  font-size: small;
+  line-height: 110%;
+  text-align: left;
+}
+

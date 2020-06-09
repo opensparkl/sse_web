@@ -1,0 +1,77 @@
+@charset "utf-8";
+@import "/common/sse.css";
+
+:root {
+  --onfido-blue: #3640F5;
+}
+
+body {
+  margin: 0 auto;
+  font-size: medium;
+}
+
+content {
+  text-align: start;
+  padding: 0;
+}
+
+catalog {
+  display: block;
+}
+
+catalog class {
+  display: inline-block;
+  text-transform: capitalize;
+  border-radius: 3px;
+  padding: 2px 3px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+catalog class.selected {
+  border: 1px solid var(--onfido-blue);
+}
+
+publisher {
+  display: block;
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+publisher > header {
+  color: var(--onfido-blue);
+  text-transform: uppercase;
+  font-size: 0.8em;
+}
+
+header img {
+  margin-right: 5px;
+}
+
+entry {
+  display: block;
+  padding: 10px 10px;
+  user-select: none;
+}
+
+entry:hover {
+  background:  #eaebfe;
+}
+
+entry label,
+entry label:visited {
+  display: block;
+  color: inherit;
+  padding: 0 5px 3px 0;
+}
+
+entry description {
+  font-size: 0.8em;
+  color: gray;
+}
+
+div[class='class-type'] {
+  margin: 5px;
+  text-align: right;
+}

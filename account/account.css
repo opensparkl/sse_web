@@ -1,0 +1,72 @@
+@charset 'UTF-8';
+@import "/common/sse.css";
+
+account {
+  display: block;
+  overflow: hidden;
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+account  > header {
+  font-size: medium;
+  background: #fbfbfb;
+  color: #647276;
+  border-bottom: 1px solid #eee;
+}
+
+.client_cert header user::after {
+  content: ' [client cert]';
+}
+
+.cookie_session header user::after {
+  content: ' [cookie session]';
+}
+
+account content {
+  text-align: center;
+}
+
+credentials {
+  display: inline-table;
+  border: 1px solid #DDD;
+  border-spacing: 5px 10px;
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+credentials::before {
+  content: 'Credentials';
+}
+
+credentials label {
+  text-align: left;
+}
+
+credentials user,
+credentials password {
+  display: table-row;
+}
+
+credentials label,
+credentials input {
+  display: table-cell;
+}
+
+pre {
+  display: inline-block;
+}
+
+button[name=login],
+button[name=logout],
+.no_user menu a.user {
+  display: none;
+}
+
+.no_user button[name=login],
+.client_cert button[name=login],
+.cookie_session button[name=logout] {
+  display: inline-block;
+}

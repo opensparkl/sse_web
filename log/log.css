@@ -1,0 +1,25 @@
+@charset 'utf-8';
+@import "/common/sse.css";
+
+log {
+  display: block;
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+log  > header {
+  font-size: medium;
+  background: #fbfbfb;
+  color: #647276;
+  border-bottom: 1px solid #eee;
+}
+
+log > content {
+  text-align: left;
+  white-space: pre;
+  height: 90vh;
+  font-family: monospace;
+  font-size: medium;
+  overflow: scroll;
+}

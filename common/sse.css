@@ -1,0 +1,164 @@
+@charset 'UTF-8';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: small;
+  font-family: Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #f9fafc;
+  color: #444;
+}
+
+header {
+  display: block;
+  text-align: left;
+  padding: 5px 10px 5px 10px;
+  overflow: hidden;
+}
+
+content {
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.closed content {
+  height: 0;
+  width: 0;
+}
+
+menu {
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 10px 0 10px;
+}
+
+menu input {
+  margin-left: 20px;
+}
+
+menu select:focus {
+  outline: none;
+}
+
+menu left {
+  float: left;
+  text-align: left;
+}
+
+menu right {
+  float: right;
+  text-align: right;
+}
+
+menu right expander,
+menu left expander {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  menu right {
+    text-align: left;
+  }
+
+  menu right a {
+    display: none;
+  }
+
+  menu right expander {
+    display: block;
+    text-align: right;
+  }
+
+  menu right expander::before {
+    content: '▶︎ Menu'
+  }
+
+  menu right.expand expander::before {
+    content: '▼ Menu';
+  }
+
+  menu right.expand a {
+    display: block;
+  }
+
+  menu right.expand a:not([href]) {
+    display: none;
+  }
+}
+
+menu a,
+menu a:visited {
+  color: #666666;
+  margin: 0 0 0 5px;
+}
+menu a:not([href]) {
+  color: #444444;
+  background: #CCCCCC;
+}
+
+pre {
+  margin: 0;
+  font-size: medium;
+  text-align: left;
+  color: #666666;
+  overflow: hidden;
+  border: 1px dotted transparent;
+  border-radius: 3px;
+}
+
+pre:hover {
+  border-color: #888;
+}
+
+.icon {
+  font-size: x-small;
+}
+
+header > span.icon::after {
+  content: " ";
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.closed > header > .icon.open-close::before {
+  content: "▶︎";
+}
+
+.opened > header > .icon.open-close::before {
+  content: "▼";
+}
+
+table {
+  font-size: small;
+  line-height: 110%;
+}
+
+table.attributes {
+  color: #555;
+}
+
+.attr-name {
+  font-weight: bold;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+button.disabled {
+  color: #AAA;
+}

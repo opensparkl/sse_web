@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+Copyright (c) 2015 Sparkl.com Limited. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the 'License');
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+Author: <jacoby@sparkl.com>Jacoby Thwaites.
+-->
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+  <xs:annotation>
+    <xs:documentation>
+      W3C XSD Schema for SPARKL Configuration XML markup.
+
+      To validate SPARKL markup, try:
+
+      xmllint --noout --schema http://localhost:8000/sparkl.xsd MYFILE.xml
+
+      where the SSE is running on localhost:8000.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!--
+  SIMPLE TYPES
+  -->
+  <xs:simpleType name='name'>
+    <xs:restriction base='xs:string'>
+      <xs:pattern value='[\p{L}\p{N}\p{Pc}\p{Pd}\.]{1,64}'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name='list_of_name'>
+    <xs:list itemType='name'/>
+  </xs:simpleType>
+
+  <xs:simpleType name='field_type'>
+    <xs:restriction base='xs:string'>
+      <xs:enumeration value='binary'/>
+      <xs:enumeration value='boolean'/>
+      <xs:enumeration value='float'/>
+      <xs:enumeration value='integer'/>
+      <xs:enumeration value='string'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name='permission'>
+    <xs:restriction base='xs:string'>
+      <xs:enumeration value='rwx'/>
+      <xs:enumeration value='rx'/>
+      <xs:enumeration value='rw'/>
+      <xs:enumeration value='wx'/>
+      <xs:enumeration value='r'/>
+      <xs:enumeration value='w'/>
+      <xs:enumeration value='x'/>
+      <xs:enumeration value='none'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name='pattern'>
+    <xs:restriction base='xs:string'>
+      <xs:pattern value='\*'/>
+      <xs:pattern value='\c+@\c+'/>
+      <xs:pattern value='\*@\c+'/>
+      <xs:pattern value='\*@\*'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name='nonEmptyString'>
+    <xs:restriction base='xs:string'>
+      <xs:minLength value='1'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--
+    COMPLEX TYPES
+  -->
+
+  <xs:complexType name='folder'>
+    <xs:sequence>
+      <xs:choice maxOccurs='unbounded' minOccurs='0'>
+        <xs:element ref='field'/>
+        <xs:element ref='grant'/>
+        <xs:element name='prop' type='prop'/>
+        <xs:element ref='link'/>
+        <xs:element ref='path'/>
+        <xs:element ref='service'/>
+        <xs:element ref='pool'/>
+        <xs:element ref='node'/>
+        <xs:element ref='folder'/>
+        <xs:element ref='mix'/>
+        <xs:element ref='notify'/>
+        <xs:element ref='solicit'/>
+        <xs:element ref='request'/>
+        <xs:element ref='consume'/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name='name'
+      type='name'
+      use='required'/>
+  </xs:complexType>
+
+  <xs:complexType name='prop'>
+    <xs:simpleContent>
+      <xs:extension base='xs:string'>
+        <xs:attribute name='name'
+          type='name'
+          use='required'/>
+        <xs:attribute name='type'
+          default='text/plain'
+          type='xs:string'
+          use='optional'/>
+        <xs:anyAttribute processContents='skip'/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name='service'>
+    <xs:sequence>
+      <xs:element name='prop'
+        maxOccurs='unbounded'
+        minOccurs='0'
+        type='prop'/>
+    </xs:sequence>
+    <xs:attribute name='name'
+      type='xs:ID'
+      use='required'/>
+    <xs:attribute name='type'
+      type='xs:token'
+      use='optional'/>
+    <xs:attribute name='dependency'
+      type='name'
+      use='optional'/>
+    <xs:attribute name='provision'
+      type='name'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='notify'>
+    <xs:choice maxOccurs='unbounded' minOccurs='0'>
+      <xs:element name='prop'
+        type='prop'/>
+    </xs:choice>
+    <xs:attribute name='name'
+      type='name'
+      use='required'/>
+    <xs:attribute name='fields'
+      type='list_of_name'
+      use='required'/>
+    <xs:attribute name='service'
+      type='name'
+      use='required'/>
+    <xs:attribute name='clients'
+      type='list_of_name'
+      use='optional'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='solicit'>
+    <xs:sequence>
+      <xs:element name='prop'
+        maxOccurs='unbounded'
+        minOccurs='0'
+        type='prop'/>
+      <xs:element name='response'
+        maxOccurs='unbounded'
+        minOccurs='1'
+        type='response'/>
+    </xs:sequence>
+    <xs:attribute name='name'
+      type='name'
+      use='required'/>
+    <xs:attribute name='fields'
+      type='list_of_name'
+      use='required'/>
+    <xs:attribute name='service'
+      type='name'
+      use='required'/>
+    <xs:attribute name='clients'
+      type='list_of_name'
+      use='optional'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='response'>
+    <xs:choice maxOccurs='unbounded' minOccurs='0'>
+      <xs:element name='prop'
+        type='prop'/>
+    </xs:choice>
+    <xs:attribute name='name'
+      default='Ok'
+      type='name'
+      use='optional'/>
+    <xs:attribute name='fields'
+      type='list_of_name'/>
+    <xs:attribute name='mask'
+      type='list_of_name'
+      use='optional'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='request'>
+    <xs:sequence>
+      <xs:element name='prop'
+        maxOccurs='unbounded'
+        minOccurs='0'
+        type='prop'/>
+      <xs:element name='reply'
+        maxOccurs='unbounded'
+        minOccurs='1'
+        type='reply'/>
+    </xs:sequence>
+    <xs:attribute name='name'
+      type='name'
+      use='required'/>
+    <xs:attribute name='fields'
+      type='list_of_name'
+      use='required'/>
+    <xs:attribute name='mask'
+      type='list_of_name'
+      use='optional'/>
+    <xs:attribute name='service'
+      type='name'
+      use='required'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='reply'>
+    <xs:choice maxOccurs='unbounded' minOccurs='0'>
+      <xs:element name='prop'
+        type='prop'/>
+    </xs:choice>
+    <xs:attribute name='name'
+      default='Ok'
+      type='name'
+      use='optional'/>
+    <xs:attribute name='fields'
+      type='list_of_name'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <xs:complexType name='consume'>
+    <xs:choice maxOccurs='unbounded' minOccurs='0'>
+      <xs:element name='prop'
+        type='prop'/>
+      <xs:element name='reply'
+        type='reply'/>
+    </xs:choice>
+    <xs:attribute name='name'
+      type='name'
+      use='required'/>
+    <xs:attribute name='fields'
+      type='list_of_name'
+      use='required'/>
+    <xs:attribute name='mask'
+      type='list_of_name'
+      use='optional'/>
+    <xs:attribute name='service'
+      type='name'
+      use='required'/>
+    <xs:attribute name='value'
+      type='xs:integer'
+      use='optional'/>
+  </xs:complexType>
+
+  <!--
+    ELEMENTS
+  -->
+
+  <xs:element name='grant'>
+    <xs:complexType>
+      <xs:attribute name='to'
+        type='pattern'
+        use='required'/>
+      <xs:attribute name='permission'
+        type='permission'
+        use='required'/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name='service'
+    type='service'/>
+
+  <xs:element name='pool'
+    type='service'/>
+
+  <xs:element name='node'
+    type='service'/>
+
+  <xs:element name='link'
+    type='service'/>
+
+  <xs:element name='path'
+    type='service'/>
+
+  <xs:element name='folder'
+    type='folder'>
+    <xs:unique name='uniqueNamesInFolder'>
+      <xs:selector xpath='*'/>
+      <xs:field xpath='@name'/>
+    </xs:unique>
+  </xs:element>
+
+  <xs:element name='mix'
+    type='folder'>
+    <xs:unique name='uniqueNamesInMix'>
+      <xs:selector xpath='*'/>
+      <xs:field xpath='@name'/>
+    </xs:unique>
+  </xs:element>
+
+  <xs:element name='field'>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name='prop'
+          maxOccurs='unbounded'
+          minOccurs='0'
+          type='prop'/>
+      </xs:sequence>
+      <xs:attribute name='name'
+        type='name'
+        use='required'/>
+      <xs:attribute name='type'
+        type='field_type'
+        use='optional'/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name='notify'
+    type='notify'/>
+
+  <xs:element name='solicit'
+    type='solicit'/>
+
+  <xs:element name='request'
+    type='request'/>
+
+  <xs:element name='consume'
+    type='consume'/>
+
+</xs:schema>

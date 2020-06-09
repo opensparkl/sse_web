@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listen</title>
+    <link href="listen.css" rel="stylesheet"> </link>
+    <script type="module" src="listen.js"> </script>
+  </head>
+  <body>
+    <menu>
+      <left>
+        <button type="button" name="clear">Clear</button>
+        <input type="text" name="limit" size="5" value="25"> </input>
+        <button type="button" name="limit">Limit rows</button>
+      </left>
+      <right>
+        <expander></expander>
+        <a href="/render/render.html">Render</a>
+        <a>Listen</a>
+        <a href="/log/log.html">Log</a>
+        <a href="/account/account.html">Account</a>
+      </right>
+    </menu>
+
+    <listeners> </listeners>
+
+   <!-- Listener -->
+    <template id="listener">
+      <listener class="disconnected">
+        <header>
+          <span class="name"> </span>
+          <span class="right icon close" title="Close listener"> </span>
+          <span class="right icon clear" title="Clear content"> </span>
+          <span class="right icon pause" title="Stop/Go"> </span>
+        </header>
+        <content>
+          <stats>
+            <trip>0</trip>
+            <odo>0</odo>
+          </stats>
+          <events> </events>
+        </content>
+      </listener>
+    </template>
+
+    <!-- Message struct -->
+    <template id="struct">
+      <struct class="">
+        <header>
+          <span class="icon open-close"> </span>
+          <span class="tag"> </span>
+          <span class="name"> </span>
+        </header>
+        <content>
+          <table class="attributes"> </table>
+        </content>
+      </struct>
+    </template>
+
+    <!-- Attr table row. -->
+    <template id="attr">
+      <tr>
+        <td class="attr-name"> </td>
+        <td class="attr-value"> </td>
+      </tr>
+    </template>
+
+    <!-- Error -->
+    <template id="error">
+      <error> </error>
+    </template>
+
+  </body>
+</html>

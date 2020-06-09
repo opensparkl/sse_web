@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log</title>
+    <link href="/common/sse.css" rel="stylesheet"> </link>
+    <link href="log.css" rel="stylesheet"> </link>
+    <script type="module" src="log.js"> </script>
+  </head>
+  <body>
+    <menu>
+      <left>
+        <select name="type">
+          <option value="all">All</option>
+          <option value="error">Error</option>
+          <option value="error_report">Error report</option>
+          <option value="info_msg">Info msg report</option>
+          <option value="info_report">Info report</option>
+          <option value="warning_msg">Warning msg</option>
+          <option value="warning_report">Warning report</option>
+          <option value="crash_report">Crash report</option>
+          <option value="supervisor_report">Supervisor report</option>
+          <option value="progress">Progress</option>
+        </select>
+      </left>
+      <right>
+        <expander> </expander>
+        <a href="/render/render.html">Render</a>
+        <a href="/listen/listen.html">Listen</a>
+        <a>Log</a>
+        <a href="/account/account.html">Account</a>
+      </right>
+    </menu>
+    <log>
+      <header>
+        Log
+      </header>
+      <content>
+
+      </content>
+    </log>
+  </body>
+</html>
