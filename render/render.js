@@ -19,8 +19,12 @@
 import * as common from '/common/sse.js'
 import * as state from './state.js'
 
-const RENDER_XSL = `${window.location.origin}/render/render.xsl`
-const SOURCE_PREFIX = '/sse_cfg/source'
+const POD = common.getPod()
+const ORIGIN = window.location.origin
+const RENDER_XSL = `${ORIGIN}/render/render.xsl`
+const SOURCE_PREFIX = `${POD}/sse_cfg/source/`
+const USER_XHR = `${POD}/sse_cfg/user`
+const USERS_XHR = `${POD}/sse_cfg/users`
 
 /**
  * Called on load.
@@ -46,12 +50,12 @@ async function users() {
     responseType: 'json'
   }
   const pod = common.getPod()
-  const userXhr = await common.httpGet(`${pod}/sse_cfg/user`, {}, options)
+  const userXhr = await common.httpGet(USER_XHR, {}, options)
   const currentUser = userXhr.response
   const users = [currentUser]
 
   if (currentUser.attr.administrator) {
-    const usersXhr = await common.httpGet(`${pod}/sse_cfg/users`, {}, options)
+    const usersXhr = await common.httpGet(USERS_XHR, {}, options)
     usersXhr.response.content.forEach(
       user => {
         if (user.attr.name != currentUser.attr.name) {
@@ -85,8 +89,7 @@ async function users() {
  */
 async function source(username, parent) {
   const select = document.querySelector('select[name=users]')
-  const pod = common.getPod()
-  const url = `${pod}${SOURCE_PREFIX}/${username}/`
+  const url = `${SOURCE_PREFIX}${username}/`
   const xhr = await common.httpGet(url)
   await render(xhr.responseXML, parent)
 }
@@ -155,8 +158,7 @@ async function activateRender() {
   document.querySelectorAll('prop[name=catalog] a.href')
     .forEach(app => {
       const href = app.getAttribute('href')
-      const pod = window.location.origin
-      app.setAttribute('href', `${href}?pod=${pod}`)
+      app.setAttribute('href', `${href}?pod=${POD}`)
     }
   )
 

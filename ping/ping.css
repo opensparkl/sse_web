@@ -9,10 +9,6 @@ ping {
   border-radius: 3px;
 }
 
-pod input {
-  width: 20em;
-}
-
 ping  > header {
   font-size: medium;
   background: #fbfbfb;
@@ -20,10 +16,16 @@ ping  > header {
   border-bottom: 1px solid #eee;
 }
 
-header input {
-  font-size: inherit;
-  border: none;
-  background: inherit;
+ping > header::after {
+  content: "Not connected";
+}
+
+.pong ping > header::after {
+  content: "Connected";
+}
+
+input[name=pod] {
+  width: 25em;
 }
 
 pong {

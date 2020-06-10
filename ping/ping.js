@@ -18,7 +18,8 @@
 
 import * as common from '/common/sse.js'
 
-const PING_PATH = '/sse/ping'
+const POD = common.getPod()
+const PING_URL = `${POD}/sse/ping`
 
 /**
  * Called on load, gets the ping response from the sse.
@@ -26,7 +27,7 @@ const PING_PATH = '/sse/ping'
 export async function init() {
   wireup()
 
-  if (common.getPod()) {
+  if (POD) {
     ping()
   }
 }
@@ -35,12 +36,15 @@ export async function init() {
  * Wires up the change pod button.
  */
 function wireup() {
-  document.querySelector('pod button[name=change]')
+
+  document.querySelector('button[name=change]')
     .addEventListener('click', (event) => {
-      const pod = document.querySelector('pod input').value
+      const pod = document.querySelector(
+        'input[name=pod]').value
       window.location = `?pod=${pod}`
     })
-  document.querySelector('pod button[name=clear]')
+
+  document.querySelector('button[name=clear]')
     .addEventListener('click', (event) => {
       common.clearPod()
       window.location = window.location.pathname
@@ -51,15 +55,13 @@ function wireup() {
  * Pings the pod and renders the result.
  */
 async function ping() {
-  const pod = common.getPod()
-  document.querySelector('pod input').value = pod
+  document.querySelector('input[name=pod]').value = POD
 
   const options = {
     accept: 'application/json'
   }
 
-  const url = `${pod}${PING_PATH}`
-  const xhr = await common.httpGet(url, {}, {
+  const xhr = await common.httpGet(PING_URL, {}, {
     accept: 'application/json',
     responseType: 'json'})
   if (xhr.response.tag && xhr.response.tag == "pong") {

@@ -32,8 +32,10 @@
  */
 import * as common from '/common/sse.js'
 
-const SOURCE_XML = '/sse_cfg/source/'
-const CATALOG_XSL = '/catalog/catalog.xsl'
+const POD = common.getPod()
+const ORIGIN = window.location.origin
+const SOURCE_XHR = `${POD}/sse_cfg/source/`
+const CATALOG_XHR = `${ORIGIN}/catalog/catalog.xsl`
 
 /**
  * Downloaded source and XSLT are retained to allow re-rendering
@@ -47,9 +49,9 @@ let xsl
  * and filtering out all <prop name='catalog'../> entries.
  */
 async function init() {
-  const sourceXhr = await common.httpGet(SOURCE_XML)
+  const sourceXhr = await common.httpGet(SOURCE_XHR)
   const classParam = (new URL(window.location)).searchParams.get('class')
-  const xslXhr = await common.httpGet(CATALOG_XSL)
+  const xslXhr = await common.httpGet(CATALOG_XHR)
 
   source = sourceXhr.responseXML
   xsl = xslXhr.responseXML
@@ -63,7 +65,7 @@ async function init() {
  */
 async function render(classParam) {
   const processor = new XSLTProcessor()
-  const pod = window.location.origin
+  const pod = common.getPod()
 
   processor.importStylesheet(xsl)
   processor.setParameter(null, 'pod', pod)

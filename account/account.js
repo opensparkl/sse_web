@@ -18,11 +18,13 @@
 
 import * as common from '/common/sse.js'
 
-const USER_PATH = '/sse_cfg/user'
-const LOGOUT_PATH = '/sse_cfg/signout'
-const REGISTER_PATH = '/sse_cfg/register'
-const CERT_PATH = '/sse_cfg/cert'
-const RENDER_PAGE = '/cfg/render/render.html'
+const POD = common.getPod()
+const ORIGIN = window.location.origin
+const USER_XHR = `${POD}/sse_cfg/user`
+const LOGOUT_XHR = `${POD}/sse_cfg/signout`
+const REGISTER_XHR = `${POD}/sse_cfg/register`
+const CERT_XHR = `${POD}/sse_cfg/cert`
+const RENDER_PAGE = `${ORIGIN}/render/render.html`
 const UNKNOWN_USER = 'unknown@unknown.domain'
 
 const LISTENERS = 'listeners'
@@ -50,8 +52,7 @@ export async function init() {
     .addEventListener('click', cert)
 
   if (common.getPod()) {
-    const url = `${common.getPod()}${USER_PATH}`
-    const xhr = await common.httpGet(url, {}, {
+    const xhr = await common.httpGet(USER_XHR, {}, {
       accept: 'application/json',
       responseType: 'json'
     })
@@ -85,8 +86,11 @@ export async function init() {
  * client certificate.
  */
 async function login() {
-  const name = document.querySelector('account input.name')
-  const password = document.querySelector('account input.password')
+  const name = document.querySelector(
+    'account input.name')
+  const password = document.querySelector(
+    'account input.password')
+
   let data = {}
   if (name.value) {
     data = {
@@ -94,8 +98,7 @@ async function login() {
       password: password.value}
   }
 
-  const url = `${common.getPod()}${USER_PATH}`
-  const xhr = await common.httpPost(url, data)
+  const xhr = await common.httpPost(USER_XHR, data)
   if (xhr.status == 200) {
     window.location.reload()
   }
@@ -108,9 +111,9 @@ async function login() {
  * Performs cookie session logout.
  */
 async function logout() {
-  await common.httpPost(LOGOUT_PATH)
-  put(LISTENERS, {})
-  put(OPENERS, {})
+  await common.httpPost(LOGOUT_XHR)
+  common.put(LISTENERS, {})
+  common.put(OPENERS, {})
   window.location.reload()
 }
 
@@ -120,8 +123,7 @@ async function logout() {
 async function register() {
   const name = document.querySelector('account input.name')
   const password = document.querySelector('account input.password')
-  const url = `${common.getPod()}${REGISTER_PATH}`
-  const xhr = await httpPost(url, {
+  const xhr = await common.httpPost(REGISTER_XHR, {
     email: name.value,
     password: password.value})
   password.value = ''
@@ -143,8 +145,7 @@ async function cert() {
   const mimetype = {
     'pem': PEM_MIME_TYPE,
     'p12': P12_MIME_TYPE}
-  const url = `${common.getPod()}${CERT_PATH}`
-  const xhr = await httpPost(url,
+  const xhr = await common.httpPost(CERT_XHR,
     {
       email: name.value,
       password: password.value,

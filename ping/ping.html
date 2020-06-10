@@ -9,20 +9,21 @@
   </head>
   <body>
     <menu>
+      <left>
+        <button name='clear'>Clear</button>
+        <input type='text' name='pod' class='pod'
+          placeholder='http[s]://some.pod[:port]'> </input>
+        <button name='change'>Change</button>
+      </left>
       <right>
         <expander></expander>
         <a href="/account/account.html">Account</a>
       </right>
     </menu>
+
     <ping>
       <header>
-        Pod
-          <pod>
-          <input type='text' name='pod' class='pod'
-            placeholder='https://some.pod[:port]'> </input>
-          <button name='change'>Change</button>
-          <button name='clear'>Clear</button>
-        </pod>
+        <pod> </pod>
       </header>
       <content>
         <pong> </pong>

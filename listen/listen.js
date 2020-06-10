@@ -19,7 +19,10 @@
 import * as state from './state.js'
 import * as common from '../common/sse.js'
 
+const POD = common.getPod()
+const ORIGIN = window.location.origin
 const LISTEN_PATH = '/sse_listen/websocket/'
+const LISTEN_PREFIX = `${POD.replace('http','ws')}${LISTEN_PATH}`
 
 /**
  * On init, wire up the button event handlers.
@@ -167,10 +170,8 @@ function render_listener(listener) {
   const listeners =
     document.querySelector(
       'listeners')
-  const ws_origin = common.getPod().replace('http', 'ws')
-  const ws_path = LISTEN_PATH + listener.local.subject
-
-  listener.local.ws_url = new URL(`${ws_origin}${ws_path}`)
+  listener.local.ws_url = new URL(
+    `${LISTEN_PREFIX}${listener.local.subject}`)
 
   listeners.appendChild(
     listener)

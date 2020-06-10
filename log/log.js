@@ -18,7 +18,8 @@
 
 import * as common from '/common/sse.js'
 
-const LOG_PATH = '/sse_log/log'
+const POD = common.getPod()
+const LOG_XHR = `${POD}/sse_log/log`
 
 /**
  * On init, wire up the select box and retrieve the log.
@@ -39,8 +40,7 @@ export function init() {
 async function get_log() {
   const type = document.querySelector('select[name=type]').value
   const content = document.querySelector('log > content')
-  const url = `${common.getPod()}${LOG_PATH}`
-  const xhr = await common.httpGet(url, {
+  const xhr = await common.httpGet(LOG_XHR, {
     type: type})
   if (xhr.status == 200) {
     content.textContent = xhr.responseText
