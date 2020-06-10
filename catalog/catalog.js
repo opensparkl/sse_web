@@ -30,12 +30,11 @@
  *   admin    - Administrative UI routinely initiated by the owner.
  *   external - UI initiated by external events, such as login.
  */
-import * as common from '/common/sse.js'
+import * as common from '../common/sse.js'
 
 const POD = common.getPod()
-const ORIGIN = window.location.origin
 const SOURCE_XHR = `${POD}/sse_cfg/source/`
-const CATALOG_XHR = `${ORIGIN}/catalog/catalog.xsl`
+const CATALOG_XHR = new URL('catalog.xsl', window.location).href
 
 /**
  * Downloaded source and XSLT are retained to allow re-rendering

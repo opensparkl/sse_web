@@ -16,7 +16,7 @@
  * Utility functions for login, register and client certificate download.
  */
 
-import * as common from '/common/sse.js'
+import * as common from '../common/sse.js'
 
 const POD = common.getPod()
 const ORIGIN = window.location.origin

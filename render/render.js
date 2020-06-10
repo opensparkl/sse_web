@@ -16,12 +16,11 @@
  * Utility functions for SPARKL render.
  */
 
-import * as common from '/common/sse.js'
+import * as common from '../common/sse.js'
 import * as state from './state.js'
 
 const POD = common.getPod()
-const ORIGIN = window.location.origin
-const RENDER_XSL = `${ORIGIN}/render/render.xsl`
+const RENDER_XSL = new URL('render.xsl', window.location).href
 const SOURCE_PREFIX = `${POD}/sse_cfg/source/`
 const USER_XHR = `${POD}/sse_cfg/user`
 const USERS_XHR = `${POD}/sse_cfg/users`

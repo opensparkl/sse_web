@@ -16,7 +16,7 @@
  * Utility functions for login, register and client certificate download.
  */
 
-import * as common from '/common/sse.js'
+import * as common from '../common/sse.js'
 
 const POD = common.getPod()
 const PING_URL = `${POD}/sse/ping`

@@ -16,7 +16,7 @@
   * Supporting Javascript for log webpage.
   */
 
-import * as common from '/common/sse.js'
+import * as common from '../common/sse.js'
 
 const POD = common.getPod()
 const LOG_XHR = `${POD}/sse_log/log`

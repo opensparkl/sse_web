@@ -16,7 +16,7 @@
  * State functions for render page.
  */
 
-import {get, put} from '/common/sse.js'
+import {get, put} from '../common/sse.js'
 import {add_listener} from './listen.js'
 
 const LISTENERS = 'listeners'
