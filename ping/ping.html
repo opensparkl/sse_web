@@ -26,6 +26,36 @@
         <pod> </pod>
       </header>
       <content>
+        <help>
+          <ul>
+            <li>
+              Loading this page over https?
+              <ul>
+                <li>Some browsers including Safari
+                  prevent you connecting to an <code>sse</code> over http.
+                </li>
+                <li>
+                  Connect to the <code>sse</code> using https instead (see below).
+                </li>
+              </ul>
+            </li>
+            <li>
+              Connecting to an <code>sse</code> over https whose server certificate is self-signed?
+              <ul>
+                <li>Load
+                  <code>https://[sse.domain][:port]/sse/ping</code> directly in your
+                  browser first, and click past the security prompts.
+                </li>
+                <li>
+                  Or, retrieve the <code>sse</code> server certificate
+                  <code>.pem</code>
+                  file and install it in your operating system or browser
+                  as a trusted cert.
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </help>
         <pong> </pong>
       </content>
     </ping>
