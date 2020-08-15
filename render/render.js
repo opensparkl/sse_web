@@ -25,6 +25,13 @@ const SOURCE_PREFIX = `${POD}/sse_cfg/source/`
 const USER_XHR = `${POD}/sse_cfg/user`
 const USERS_XHR = `${POD}/sse_cfg/users`
 
+// Search state holds an array of matched elements and the index of the
+// current search element in that array.
+const SearchState = {
+  matched: [],
+  current: 0
+}
+
 /**
  * Called on load.
  */
@@ -120,24 +127,35 @@ async function activateRender() {
   document.querySelector('menu button[name=close-all]')
     .addEventListener('click', closeAll)
 
+  // Search is done on each keyup, and cancelled on clear.
+  document.querySelector('menu input[name=search]')
+    .addEventListener('keyup', search)
+  document.querySelector('menu button[name=next]')
+    .addEventListener('click', nextSearch)
+  document.querySelector('menu button[name=clear]')
+    .addEventListener('click', clearSearch)
+  clearSearch()
+
+
   // Activate open/close icons.
-  const icons = document.getElementsByClassName('icon open-close');
-  [...icons].forEach(icon => {
-    icon.onclick = function(event) {
-      const container = common.selectOne(
-        'ancestor::*[@action="open-close"][1]', icon)
-      if (container) {
-        if (container.classList.contains('opened')) {
-          container.classList.remove('opened')
-          container.classList.add('closed')
-        }
-        else {
-          container.classList.remove('closed')
-          container.classList.add('opened')
+  document.querySelectorAll('.icon.open-close')
+    .forEach(icon => {
+      icon.onclick = function(event) {
+        const container = icon.closest(
+          '*[action="open-close"]')
+        if (container) {
+          if (container.classList.contains('opened')) {
+            container.classList.remove('opened')
+            container.classList.add('closed')
+          }
+          else {
+            container.classList.remove('closed')
+            container.classList.add('opened')
+          }
         }
       }
     }
-  })
+  )
 
   // Activate listener toggle.
   document.querySelectorAll('header > span.name')
@@ -175,10 +193,10 @@ async function activateRender() {
             [descendant::*[@service="${name}" or @clients="${name}"]]`, folder)
       service.addEventListener('mouseover',
         () =>
-          ops.forEach( op => op.classList.add('highlight')))
+          ops.forEach(op => op.classList.add('highlight')))
       service.addEventListener('mouseout',
         () =>
-          ops.forEach( op => op.classList.remove('highlight')))
+          ops.forEach(op => op.classList.remove('highlight')))
       })
 
   // Activate field hover.
@@ -197,10 +215,12 @@ async function activateRender() {
               [@name="${name}"]`, folder)
       field.addEventListener('mouseover',
         () =>
-          eventFields.forEach( eventField => eventField.classList.add('highlight')))
+          eventFields.forEach( eventField =>
+            eventField.classList.add('highlight')))
       field.addEventListener('mouseout',
         () =>
-          eventFields.forEach( eventField => eventField.classList.remove('highlight')))
+          eventFields.forEach( eventField =>
+            eventField.classList.remove('highlight')))
       })
 }
 
@@ -221,13 +241,126 @@ function openAll() {
  * Contract all closeable elements.
  */
 function closeAll() {
-  const selector = 'folder[action=open-close],mix[action=open-close]'
+  const selector = '*[action=open-close]'
   document.querySelectorAll(selector).forEach(
     element => {
       element.classList.remove('opened')
       element.classList.add('closed')
     }
   )
+}
+
+/**
+ * Apply changed search string.
+ */
+function search(event) {
+  const term = event.target.value.toLowerCase()
+  const all = document.querySelectorAll(
+    'service,field,notify,solicit,request,consume,folder,mix,prop')
+  SearchState.matched = [...all].filter(
+    element =>
+      element.getAttribute('name').toLowerCase().includes(term))
+  SearchState.current = undefined
+  document.querySelector('menu span[name=matches]')
+    .textContent = SearchState.matched.length
+}
+
+/**
+ * Go to the next (or first) index in the search match list, unless empty.
+ */
+function nextSearch() {
+  const {
+    matched,
+    current: oldIndex
+  } = SearchState
+  let newIndex
+
+  if (matched.length) {
+    if (oldIndex == undefined || oldIndex == matched.length - 1) {
+       newIndex = 0
+    }
+    else {
+      newIndex = oldIndex + 1
+    }
+
+    SearchState.current = newIndex
+    document.querySelector('menu span[name=index]')
+      .textContent = newIndex + 1
+
+    unhighlight(matched[oldIndex])
+    highlight(matched[newIndex])
+    view(matched[newIndex])
+  }
+}
+
+/**
+ * Unhighlights the matched item at the given index, or no action if
+ * index is undefined.
+ */
+function unhighlight(element) {
+  if (element == undefined) {
+    return
+  }
+  const highlight = highlightable(element)
+  highlight.classList.remove('highlight')
+}
+
+/**
+ * Highlights the current search element.
+ */
+function highlight(element) {
+  const highlight = highlightable(element)
+  highlight.classList.add('highlight')
+}
+
+/**
+ * Returns the highlight-able element appropriate to the supplied
+ * element.
+ */
+function highlightable(element) {
+  const tag = element.localName
+
+  if (['field', 'service', 'folder', 'mix', 'prop'].includes(tag)) {
+    return element
+  }
+  else if (['notify', 'solicit', 'request', 'consume'].includes(tag)) {
+    return element.closest('table.operation')
+  }
+
+  throw("Unsupported element: " + selected)
+}
+
+/**
+ * Opens the path and scrolls the element into view.
+ */
+function view(element) {
+  let el = element
+  while (el.localName != 'source') {
+    if (el.classList.contains('closed')) {
+      el.classList.remove('closed')
+      el.classList.add('opened')
+    }
+    el = el.parentElement
+  }
+
+  element.scrollIntoView({
+    behavior: 'smooth'
+  })
+}
+
+/**
+ * Clear the search term, and simulate the keyup event directly.
+ */
+function clearSearch() {
+  const input = document.querySelector('menu input[name=search]')
+  input.value = ''
+  document.querySelector('menu span[name=index]')
+    .textContent = ''
+  document.querySelectorAll('.highlight')
+    .forEach(
+      element =>
+        element.classList.remove('highlight'))
+  search({target: {value: ''}})
 }
 
 /**

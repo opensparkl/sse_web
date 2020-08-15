@@ -162,6 +162,14 @@ pre:hover {
   font-size: x-small;
 }
 
+menu span[name=index]:not(:empty)::after {
+  content: " of ";
+}
+
+menu span[name=matches]::after {
+  content: " elements";
+}
+
 header > span.icon::after {
   content: " ";
 }
