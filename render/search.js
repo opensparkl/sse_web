@@ -214,7 +214,8 @@ function view(element) {
   }
 
   element.scrollIntoView({
-    behavior: 'smooth'
+    behavior: 'smooth',
+    block: 'center'
   })
 }
 
