@@ -17,6 +17,7 @@
  */
 
 import * as common from '../common/sse.js'
+import * as Search from './search.js'
 import * as state from './state.js'
 
 const POD = common.getPod()
@@ -24,13 +25,6 @@ const RENDER_XSL = new URL('render.xsl', window.location).href
 const SOURCE_PREFIX = `${POD}/sse_cfg/source/`
 const USER_XHR = `${POD}/sse_cfg/user`
 const USERS_XHR = `${POD}/sse_cfg/users`
-
-// Search state holds an array of matched elements and the index of the
-// current search element in that array.
-const SearchState = {
-  matched: [],
-  current: 0
-}
 
 /**
  * Called on load.
@@ -122,20 +116,12 @@ async function render(xml, parent) {
  * append/remove event handler to element names.
  */
 async function activateRender() {
+  Search.init()
+
   document.querySelector('menu button[name=open-all]')
     .addEventListener('click', openAll)
   document.querySelector('menu button[name=close-all]')
     .addEventListener('click', closeAll)
-
-  // Search is done on each keyup, and cancelled on clear.
-  document.querySelector('menu input[name=search]')
-    .addEventListener('keyup', search)
-  document.querySelector('menu button[name=next]')
-    .addEventListener('click', nextSearch)
-  document.querySelector('menu button[name=clear]')
-    .addEventListener('click', clearSearch)
-  clearSearch()
-
 
   // Activate open/close icons.
   document.querySelectorAll('.icon.open-close')
@@ -170,8 +156,8 @@ async function activateRender() {
     }
   )
 
-  // Append ?pod=POD[:port] to app hrefs ending in ".html" for one-click start
-  // of linked apps.
+  // Append ?pod=POD[:port] to catalog hrefs ending in ".html" for
+  // one-click start of catalog items.
   document.querySelectorAll('prop[name=catalog] a.href')
     .forEach(app => {
       const href = app.getAttribute('href')
@@ -248,119 +234,6 @@ function closeAll() {
       element.classList.add('closed')
     }
   )
-}
-
-/**
- * Apply changed search string.
- */
-function search(event) {
-  const term = event.target.value.toLowerCase()
-  const all = document.querySelectorAll(
-    'service,field,notify,solicit,request,consume,folder,mix,prop')
-  SearchState.matched = [...all].filter(
-    element =>
-      element.getAttribute('name').toLowerCase().includes(term))
-  SearchState.current = undefined
-  document.querySelector('menu span[name=matches]')
-    .textContent = SearchState.matched.length
-}
-
-/**
- * Go to the next (or first) index in the search match list, unless empty.
- */
-function nextSearch() {
-  const {
-    matched,
-    current: oldIndex
-  } = SearchState
-  let newIndex
-
-  if (matched.length) {
-    if (oldIndex == undefined || oldIndex == matched.length - 1) {
-       newIndex = 0
-    }
-    else {
-      newIndex = oldIndex + 1
-    }
-
-    SearchState.current = newIndex
-    document.querySelector('menu span[name=index]')
-      .textContent = newIndex + 1
-
-    unhighlight(matched[oldIndex])
-    highlight(matched[newIndex])
-    view(matched[newIndex])
-  }
-}
-
-/**
- * Unhighlights the matched item at the given index, or no action if
- * index is undefined.
- */
-function unhighlight(element) {
-  if (element == undefined) {
-    return
-  }
-  const highlight = highlightable(element)
-  highlight.classList.remove('highlight')
-}
-
-/**
- * Highlights the current search element.
- */
-function highlight(element) {
-  const highlight = highlightable(element)
-  highlight.classList.add('highlight')
-}
-
-/**
- * Returns the highlight-able element appropriate to the supplied
- * element.
- */
-function highlightable(element) {
-  const tag = element.localName
-
-  if (['field', 'service', 'folder', 'mix', 'prop'].includes(tag)) {
-    return element
-  }
-  else if (['notify', 'solicit', 'request', 'consume'].includes(tag)) {
-    return element.closest('table.operation')
-  }
-
-  throw("Unsupported element: " + selected)
-}
-
-/**
- * Opens the path and scrolls the element into view.
- */
-function view(element) {
-  let el = element
-  while (el.localName != 'source') {
-    if (el.classList.contains('closed')) {
-      el.classList.remove('closed')
-      el.classList.add('opened')
-    }
-    el = el.parentElement
-  }
-
-  element.scrollIntoView({
-    behavior: 'smooth'
-  })
-}
-
-/**
- * Clear the search term, and simulate the keyup event directly.
- */
-function clearSearch() {
-  const input = document.querySelector('menu input[name=search]')
-  input.value = ''
-  document.querySelector('menu span[name=index]')
-    .textContent = ''
-  document.querySelectorAll('.highlight')
-    .forEach(
-      element =>
-        element.classList.remove('highlight'))
-  search({target: {value: ''}})
 }
 
 /**

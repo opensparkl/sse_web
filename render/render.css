@@ -162,6 +162,10 @@ pre:hover {
   font-size: x-small;
 }
 
+.highlight {
+  filter: invert(20%);
+}
+
 menu span[name=index]:not(:empty)::after {
   content: " of ";
 }
@@ -223,11 +227,6 @@ table.operation {
   border-spacing: 1px;
 }
 
-table.operation.highlight {
-  border-color: #ccc;
-  background-color: #f4f4f4;
-}
-
 tr.notify > .set {
   color: white;
   background: #4ac8a7;
@@ -256,6 +255,10 @@ tr.reply > .set {
 tr.consume > .set {
   color: white;
   background: #EDAB40;
+}
+
+div.field span.label {
+  background: white;
 }
 
 tr.notify   > .fields span.icon::before,
@@ -308,12 +311,6 @@ td.set {
 
 td.fields {
   font-size: small;
-}
-
-td.fields .field.highlight .label {
-  background: #888;
-  color: white;
-  border-radius: 2px;
 }
 
 table.attributes {
