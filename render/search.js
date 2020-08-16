@@ -205,7 +205,7 @@ function highlightable(element) {
  */
 function view(element) {
   let el = element
-  let block = 'nearest'
+  let block = 'center'
   while (el.localName != 'source') {
     if (el.classList.contains('closed')) {
       el.classList.remove('closed')
