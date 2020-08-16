@@ -205,6 +205,7 @@ function highlightable(element) {
  */
 function view(element) {
   let el = element
+  let block = 'nearest'
   while (el.localName != 'source') {
     if (el.classList.contains('closed')) {
       el.classList.remove('closed')
@@ -213,9 +214,15 @@ function view(element) {
     el = el.parentElement
   }
 
+  if ([
+      'folder',
+      'mix'].includes(element.localName)) {
+    block = 'start'
+  }
+
   element.scrollIntoView({
     behavior: 'smooth',
-    block: 'center'
+    block: block
   })
 }
 
